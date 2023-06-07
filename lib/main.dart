@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mcart/CartModal.dart';
 import 'package:mcart/CartPage.dart';
 import 'package:mcart/HomePage.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,18 +14,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider(
+      create: (context) => CartModel(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => HomeScreen(),
+          '/cart': (context) => CartScreen(),
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        // When navigating to the "/" route, build the HomeScreen widget.
-        '/': (context) => HomeScreen(),
-        // When navigating to the "/cart" route, build the CartScreen widget.
-        '/cart': (context) => CartScreen(),
-      },
     );
   }
 }

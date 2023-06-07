@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mcart/Product.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:provider/provider.dart';
+
+import 'CartModal.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -67,17 +70,18 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           backgroundColor: Colors.cyanAccent[700],
           actions: [
-            IconButton(
-              icon: badges.Badge(
-                badgeContent: Text(cart.length.toString()),
-                badgeColor: Colors.red,
-                child: Icon(Icons.shopping_cart),
+            Consumer<CartModel>(
+              builder: (context, cartModel, _) => IconButton(
+                icon: badges.Badge(
+                  badgeContent: Text(cartModel.cart.length.toString()),
+                  badgeColor: Colors.red,
+                  child: Icon(Icons.shopping_cart),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/cart');
+                },
               ),
-              onPressed: () {
-                // Handle button press
-                Navigator.pushNamed(context, '/cart', arguments: cart);
-              },
-            )
+            ),
           ],
         ),
         body: SingleChildScrollView(
@@ -101,7 +105,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               onTap: () {
                                 setState(() {
                                   //add the product to the cart
-                                  cart.add(productList[index]);
+                                  Provider.of<CartModel>(context, listen: false)
+                                      .addToCart(productList[index]);
                                 });
                               },
                             ),
