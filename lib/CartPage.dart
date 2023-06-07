@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mcart/Product.dart';
 
 class CartScreen extends StatefulWidget {
   CartScreen({super.key});
@@ -8,30 +9,61 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  //argument Cart will contain the list of products
-  //  {
-  //     'id': '1',
-  //     'title': 'Dell',
-  //     'description': 'Dell laptop',
-  //     'price': 69999,
-  //     'imageUrl':
-  //         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMg8he6iEidNPOfOSoBGiPz8qOBEgE4xnW0Ey5scOfEA&usqp=CAU&ec=48600113',
-  //   },
-  //Like in the above format
   @override
   Widget build(BuildContext context) {
-    var argument = ModalRoute.of(context)!.settings.arguments;
-    var cart = (argument != null) ? argument : List.empty();
+    // var argument = ModalRoute.of(context)!.settings.arguments;
+    //Get the list of products in the cart as Product modal
+    List<Product> cart =
+        ModalRoute.of(context)!.settings.arguments as List<Product>;
+    // Product cart = argument as Product;
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Cart'),
-        ),
+            title: Text('Cart'),
+            backgroundColor: Colors.cyanAccent[700],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(30),
+              ),
+            )),
         //body will contain the list of products in the cart use cart
-        body: Column(
-          children: [
-            //render
-          ],
-        ));
+        body: (cart.length != 0)
+            ? Column(
+                children: [
+                  Container(
+                    height: cart.length * 100.0,
+                    child: ListView.builder(
+                      itemCount: cart.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                            leading: Image.network(cart[index].imageUrl),
+                            title: Text(cart[index].title),
+                            subtitle: Text(cart[index].description),
+                            trailing: Text(cart[index].price.toString()),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  //cart total
+                  Text(
+                    'Total: \$${cart.fold(0.0, (previousValue, element) => previousValue + element.price)}',
+                    style: TextStyle(fontSize: 30),
+                  ),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        cart.clear();
+                      });
+                    },
+                    child: Text('Clear Cart'),
+                  ),
+                ],
+              )
+            : Center(
+                child: Text('No items in the cart'),
+              ));
   }
 }
