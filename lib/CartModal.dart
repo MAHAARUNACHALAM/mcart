@@ -9,6 +9,7 @@ class CartModel extends ChangeNotifier {
 
   void addToCart(Product product) {
     _cart.add(product);
+    print("object added to cart is triggered");
     notifyListeners();
   }
 

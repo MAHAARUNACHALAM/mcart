@@ -78,7 +78,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Icon(Icons.shopping_cart),
                 ),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/cart');
+                  Navigator.pushNamed(
+                    context,
+                    '/cart',
+                    arguments: cartModel.cart,
+                  );
                 },
               ),
             ),
@@ -103,11 +107,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               trailing:
                                   Text(productList[index].price.toString()),
                               onTap: () {
-                                setState(() {
-                                  //add the product to the cart
-                                  Provider.of<CartModel>(context, listen: false)
-                                      .addToCart(productList[index]);
-                                });
+                                //add the product to the cart
+                                Provider.of<CartModel>(context, listen: false)
+                                    .addToCart(productList[index]);
                               },
                             ),
                           );

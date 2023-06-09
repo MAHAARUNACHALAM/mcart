@@ -2,14 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:mcart/CartModal.dart';
 import 'package:mcart/CartPage.dart';
 import 'package:mcart/HomePage.dart';
+import 'package:mcart/Login.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+import 'CartPage1.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -23,7 +33,8 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: '/',
         routes: {
-          '/': (context) => HomeScreen(),
+          '/home': (context) => HomeScreen(),
+          '/': (context) => LoginScreen(),
           '/cart': (context) => CartScreen(),
         },
       ),
